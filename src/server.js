@@ -7,8 +7,16 @@ const { exec } = require("child_process");
 var shell = require("shelljs");
 const app = express();
 
-app.use(cors());
-// for parsing application/json
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
+  next();
+});
+
 app.use(bodyParser.json());
 
 // for parsing application/xwww-
@@ -122,73 +130,76 @@ app.post("/", async (req, res) => {
             if (err) throw err;
             console.log("Saved!");
           });
-          exec(`cd ${req.body.id} && gcc run.c -o run`, (error, stdout, stderr) => {
-            if (error) {
-              console.log("error")
-              // console.error(`exec error 0000000: ${error}`);
-              // console.error(error.name);
-              // console.error(stderr);
-              fs.rmdir(
-                `${req.body.id}`,
-                {
-                  recursive: true,
-                },
-                (error) => {
-                  if (error) {
-                    console.log(error);
-                  } else {
-                    console.log("Non Recursive: Directories Deleted!");
+          exec(
+            `cd ${req.body.id} && gcc run.c -o run`,
+            (error, stdout, stderr) => {
+              if (error) {
+                console.log("error");
+                // console.error(`exec error 0000000: ${error}`);
+                // console.error(error.name);
+                // console.error(stderr);
+                fs.rmdir(
+                  `${req.body.id}`,
+                  {
+                    recursive: true,
+                  },
+                  (error) => {
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log("Non Recursive: Directories Deleted!");
+                    }
                   }
-                }
-              );
-              res.send(stderr);
-            } else {
-              console.log("1")
+                );
+                res.send(stderr);
+              } else {
+                console.log("1");
 
-              exec(`cd ${req.body.id} && ./run`, (error, stdout, stderr) => {
-                console.log(`stdout: ${stdout}`);
-                console.log(`stderr: ${stderr}`);
-                if (error) {
-              console.log("2")
+                exec(`cd ${req.body.id} && ./run`, (error, stdout, stderr) => {
+                  console.log(`stdout: ${stdout}`);
+                  console.log(`stderr: ${stderr}`);
+                  if (error) {
+                    console.log("2");
 
-                  console.error(`exec error: ${error}`);
-                  fs.rmdir(
-                    `${req.body.id}`,
-                    {
-                      recursive: true,
-                    },
-                    (error) => {
-                      if (error) {
-                        console.log(error);
-                      } else {
-                        console.log("Non Recursive: Directories Deleted!");
+                    console.error(`exec error: ${error}`);
+                    fs.rmdir(
+                      `${req.body.id}`,
+                      {
+                        recursive: true,
+                      },
+                      (error) => {
+                        if (error) {
+                          console.log(error);
+                        } else {
+                          console.log("Non Recursive: Directories Deleted!");
+                        }
                       }
-                    }
-                  );
-                  res.send(error);
+                    );
+                    res.send(error);
 
-                  return;
-                } else {
-              console.log("2")
+                    return;
+                  } else {
+                    console.log("2");
 
-                  fs.rmdir(
-                    `${req.body.id}`,
-                    {
-                      recursive: true,
-                    },
-                    (error) => {
-                      if (error) {
-                        console.log(error);
-                      } else {
-                        console.log("Non Recursive: Directories Deleted!");
+                    fs.rmdir(
+                      `${req.body.id}`,
+                      {
+                        recursive: true,
+                      },
+                      (error) => {
+                        if (error) {
+                          console.log(error);
+                        } else {
+                          console.log("Non Recursive: Directories Deleted!");
+                        }
                       }
-                    }
-                  );
-                  res.send(stdout);
-                }
-              });
+                    );
+                    res.send(stdout);
+                  }
+                });
+              }
             }
-          });
+          );
         } else if (req.body.name == "c++") {
           fs.writeFile(`${req.body.id}/run.cpp`, req.body.code, function (err) {
             if (err) throw err;
@@ -217,44 +228,47 @@ app.post("/", async (req, res) => {
                 );
                 res.send(stderr);
               } else {
-                exec(`cd ${req.body.id} && ./teste`, (error, stdout, stderr) => {
-                  console.log(`stdout: ${stdout}`);
-                  console.log(`stderr: ${stderr}`);
-                  if (error) {
-                    console.error(`exec error: ${error}`);
-                    fs.rmdir(
-                      `${req.body.id}`,
-                      {
-                        recursive: true,
-                      },
-                      (error) => {
-                        if (error) {
-                          console.log(error);
-                        } else {
-                          console.log("Non Recursive: Directories Deleted!");
+                exec(
+                  `cd ${req.body.id} && ./teste`,
+                  (error, stdout, stderr) => {
+                    console.log(`stdout: ${stdout}`);
+                    console.log(`stderr: ${stderr}`);
+                    if (error) {
+                      console.error(`exec error: ${error}`);
+                      fs.rmdir(
+                        `${req.body.id}`,
+                        {
+                          recursive: true,
+                        },
+                        (error) => {
+                          if (error) {
+                            console.log(error);
+                          } else {
+                            console.log("Non Recursive: Directories Deleted!");
+                          }
                         }
-                      }
-                    );
-                    res.send(error);
+                      );
+                      res.send(error);
 
-                    return;
-                  } else {
-                    fs.rmdir(
-                      `${req.body.id}`,
-                      {
-                        recursive: true,
-                      },
-                      (error) => {
-                        if (error) {
-                          console.log(error);
-                        } else {
-                          console.log("Non Recursive: Directories Deleted!");
+                      return;
+                    } else {
+                      fs.rmdir(
+                        `${req.body.id}`,
+                        {
+                          recursive: true,
+                        },
+                        (error) => {
+                          if (error) {
+                            console.log(error);
+                          } else {
+                            console.log("Non Recursive: Directories Deleted!");
+                          }
                         }
-                      }
-                    );
-                    res.send(stdout);
+                      );
+                      res.send(stdout);
+                    }
                   }
-                });
+                );
               }
             }
           );
