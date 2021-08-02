@@ -146,7 +146,7 @@ app.post("/", async (req, res) => {
                 let img = []
                 for (let i = 0; i < count; i++) {
 
-                  img.push(`Images/${req.body.id}-${i}.png`)
+                  img.push(`/media/ZNYR/NodeJsCompiler/public/Images/${req.body.id}-${i}.png`)
                 }
                 res.send(img)
 
