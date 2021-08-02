@@ -102,7 +102,7 @@ app.post("/", async (req, res) => {
             if (err) throw err;
             console.log("Saved!");
           });
-          exec(`python ${req.body.id}/run.py`, function (error, stdout, stderr) {
+          exec(`python3 ${req.body.id}/run.py`, function (error, stdout, stderr) {
             // handle err, stdout, stderr
             console.log("opp", error, stdout, stderr)
             if (error) {
