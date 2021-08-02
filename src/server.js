@@ -57,7 +57,7 @@ app.post("/", async (req, res) => {
 
 
             for (let i = 0; i < count; i++) {
-              abc = abc.replace(".show()", `.savefig('/media/ZNYR/NodeJsCompiler/public/Images/${req.body.id}-${i}.png')`)
+              abc = abc.replace(".show()", `.savefig('/media/ZNYR/codeznyr/znyrcode/media/graph_images/${req.body.id}-${i}.png')`)
               // abc = abc.replace(".show()", `.savefig('public/Images/abc-${i}.png')`)
             }
             console.log(count)
@@ -146,7 +146,7 @@ app.post("/", async (req, res) => {
                 let img = []
                 for (let i = 0; i < count; i++) {
 
-                  img.push(`/media/ZNYR/NodeJsCompiler/public/Images/${req.body.id}-${i}.png`)
+                  img.push(`/media/ZNYR/codeznyr/znyrcode/media/graph_images/${req.body.id}-${i}.png`)
                 }
                 res.send(img)
 
