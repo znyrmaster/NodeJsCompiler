@@ -57,7 +57,7 @@ app.post("/", async (req, res) => {
 
 
             for (let i = 0; i < count; i++) {
-              abc = abc.replace(".show()", `.savefig('public/Images/${req.body.id}-${i}.png')`)
+              abc = abc.replace(".show()", `.savefig('/media/ZNYR/NodeJsCompiler/public/Images/${req.body.id}-${i}.png')`)
               // abc = abc.replace(".show()", `.savefig('public/Images/abc-${i}.png')`)
             }
             console.log(count)
@@ -485,11 +485,11 @@ app.post("/", async (req, res) => {
   } catch (error) { }
 });
 
-app.listen(3334, () => {
-  console.log("started");
-});
-
-
-// app.listen(3004, () => {
+// app.listen(3334, () => {
 //   console.log("started");
 // });
+
+
+app.listen(3331, () => {
+  console.log("started");
+});
