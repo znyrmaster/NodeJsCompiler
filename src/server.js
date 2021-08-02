@@ -485,11 +485,11 @@ app.post("/", async (req, res) => {
   } catch (error) { }
 });
 
-// app.listen(3334, () => {
-//   console.log("started");
-// });
-
-
-app.listen(3331, () => {
+app.listen(3334, () => {
   console.log("started");
 });
+
+
+// app.listen(3331, () => {
+//   console.log("started");
+// });
