@@ -70,7 +70,7 @@ app.post("/", async (req, res) => {
                   }
                 }
               );
-              res.send(stderr);
+              res.json({"error":"error","output":stderr});
             } else {
               fs.rmdir(
                 `${req.body.id}`,
@@ -164,7 +164,9 @@ app.post("/", async (req, res) => {
                     }
                   }
                 );
-                res.send(stderr);
+                // res.send(stderr);
+              res.json({"error":"error","output":stderr});
+
               } else {
                 fs.rmdir(
                   `${req.body.id}`,
@@ -211,7 +213,9 @@ app.post("/", async (req, res) => {
                     }
                   }
                 );
-                res.send(stderr);
+                // res.send(stderr);
+              res.json({"error":"error","output":stderr});
+
               } else {
                 console.log("1");
 
@@ -288,7 +292,9 @@ app.post("/", async (req, res) => {
                     }
                   }
                 );
-                res.send(stderr);
+                // res.send(stderr);
+              res.json({"error":"error","output":stderr});
+
               } else {
                 exec(
                   `cd ${req.body.id} && ./teste`,
@@ -361,7 +367,9 @@ app.post("/", async (req, res) => {
                   }
                 }
               );
-              res.send(stderr);
+              // res.send(stderr);
+              res.json({"error":"error","output":stderr});
+
             } else {
               exec(`cd ${req.body.id} && java run`, (error, stdout, stderr) => {
                 console.log(`stdout: ${stdout}`);
