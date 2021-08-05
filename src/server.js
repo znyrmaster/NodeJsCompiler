@@ -1,8 +1,9 @@
 const express = require("express");
 let { PythonShell } = require("python-shell");
 var cors = require("cors");
+const fs = require("fs");
+
 var bodyParser = require("body-parser");
-var fs = require("fs");
 const { exec } = require("child_process");
 var shell = require("shelljs");
 const app = express();
@@ -43,60 +44,7 @@ app.post("/", async (req, res) => {
 
           let abc = req.body.code
 
-          // new code
-          let indices;
-          var count;
-          var pcount;
-
-          if (abc.includes("matplotlib")) {
-            function countOccurences(string, word) {
-              return string.split(word).length - 1;
-            }
-            count = countOccurences(abc, ".show()"); // 2
-
-
-
-            for (let i = 0; i < count; i++) {
-              abc = abc.replace(".show()", `.savefig('/media/ZNYR/codeznyr/znyrcode/media/graph_images/${req.body.id}-${i}.png')`)
-              // abc = abc.replace(".show()", `.savefig('public/Images/abc-${i}.png')`)
-            }
-            console.log(count)
-            console.log(abc)
-
-
-          } else {
-            console.log("nothing")
-          }
-
-          // if (abc.includes("plotly")) {
-          //   function countOccurences(string, word) {
-          //     return string.split(word).length - 1;
-          //   }
-          //   pcount = countOccurences(abc, ".show()"); // 2
-
-
-
-          //   for (let i = 0; i < pcount; i++) {
-          //     abc = abc.replace(".show()", `.to_dict()\nprint(fig.to_dict())\n`)
-          //     // abc = abc.replace(".show()", `.savefig('public/Images/abc-${i}.png')`)
-          //   }
-          //   console.log(pcount)
-          //   console.log(abc)
-
-
-          // } else {
-          //   console.log("nothing")
-          // }
-
-
-
-
-
-
-
-
-          // new code
-
+         
           console.log("abc", abc)
           fs.writeFile(`${req.body.id}/run.py`, abc, function (err) {
             if (err) throw err;
@@ -138,38 +86,12 @@ app.post("/", async (req, res) => {
                 }
               );
               console.log("else", stdout)
+              console.log("else",typeof stdout)
 
-              if (count > 0) {
-                console.log("matplotlib")
-                // res.sendFile("NodeJsCompiler/pavitest2@gmail.com/0.png");
-                // let abc = {"type":"image",img:[]}
-                let img = []
-                for (let i = 0; i < count; i++) {
-
-                  img.push(`/media/ZNYR/codeznyr/znyrcode/media/graph_images/${req.body.id}-${i}.png`)
-                }
-                res.send(img)
-
-              }
-              // else if(pcount > 0) {
-              //   console.log("plotly")
-
-              //   let out = {
-              //     type:'plotly',
-              //     data :stdout
-              //   }
-              //   res.json(stdout);
-
-              // }
-              else {
-                console.log("nothing")
 
                 res.send(stdout);
 
-              }
-
-              console.log(stdout);
-              console.log(typeof stdout);
+           
             }
           });
           // PythonShell.run(
@@ -332,6 +254,8 @@ app.post("/", async (req, res) => {
                         }
                       }
                     );
+                    console.log("ccccstdout",stdout)
+                    console.log("ccccstdout-type",typeof stdout)
                     res.send(stdout);
                   }
                 });
