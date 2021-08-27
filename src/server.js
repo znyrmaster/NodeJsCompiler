@@ -34,9 +34,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/", async (req, res) => {
   console.log(req.body.name);
+  console.log(`${__dirname}` + "/" + `${req.body.id}`)
 
   try {
-    fs.mkdir(`${req.body.id}`, (err, folder) => {
+    fs.mkdir(`${__dirname}` + "/" + `${req.body.id}`, (err, folder) => {
       if (err) {
         console.log(err);
       } else {
@@ -48,11 +49,12 @@ app.post("/", async (req, res) => {
 
          
           console.log("abc", abc)
-          fs.writeFile(`${req.body.id}/run.py`, abc, function (err) {
+          console.log("folder path", __dirname)
+          fs.writeFile(`${__dirname}` + "/" + `${req.body.id}/run.py`, abc, function (err) {
             if (err) throw err;
             console.log("Saved!");
           });
-          exec(`python3 ${req.body.id}/run.py`, function (error, stdout, stderr) {
+          exec(`python3 ${__dirname}` + "/" + `${req.body.id}/run.py`, function (error, stdout, stderr) {
             // handle err, stdout, stderr
             console.log("opp", error, stdout, stderr)
             if (error) {
@@ -60,7 +62,7 @@ app.post("/", async (req, res) => {
               console.error(error.name);
               console.error(stderr);
               fs.rmdir(
-                `${req.body.id}`,
+                `${__dirname}` + "/" + `${req.body.id}`,
                 {
                   recursive: true,
                 },
@@ -75,7 +77,7 @@ app.post("/", async (req, res) => {
               res.json({"error":"error","output":stderr});
             } else {
               fs.rmdir(
-                `${req.body.id}`,
+                `${__dirname}` + "/" + `${req.body.id}`,
                 {
                   recursive: true,
                 },
@@ -144,17 +146,17 @@ app.post("/", async (req, res) => {
           //     console.log("asynchronous logging has val:", val)
           //   );
 
-          fs.writeFile(`${req.body.id}/run.js`, req.body.code, function (err) {
+          fs.writeFile(`${__dirname}` + "/" + `${req.body.id}/run.js`, req.body.code, function (err) {
             if (err) throw err;
             console.log("Saved!");
-            exec(`node ${req.body.id}/run.js`, function (err, stdout, stderr) {
+            exec(`node ${__dirname}` + "/" + `${req.body.id}/run.js`, function (err, stdout, stderr) {
               // handle err, stdout, stderr
               if (err) {
                 // console.error(`exec error 0000000: ${error}`);
                 // console.error(error.name);
                 // console.error(stderr);
                 fs.rmdir(
-                  `${req.body.id}`,
+                  `${__dirname}` + "/" + `${req.body.id}`,
                   {
                     recursive: true,
                   },
@@ -171,7 +173,7 @@ app.post("/", async (req, res) => {
 
               } else {
                 fs.rmdir(
-                  `${req.body.id}`,
+                  `${__dirname}` + "/" + `${req.body.id}`,
                   {
                     recursive: true,
                   },
@@ -190,12 +192,12 @@ app.post("/", async (req, res) => {
             });
           });
         } else if (req.body.name == "c") {
-          fs.writeFile(`${req.body.id}/run.c`, req.body.code, function (err) {
+          fs.writeFile(`${__dirname}` + "/" + `${req.body.id}/run.c`, req.body.code, function (err) {
             if (err) throw err;
             console.log("Saved!");
           });
           exec(
-            `cd ${req.body.id} && gcc run.c -o run`,
+            `cd ${__dirname}` + "/" + `${req.body.id} && gcc run.c -o run`,
             (error, stdout, stderr) => {
               if (error) {
                 console.log("error");
@@ -203,7 +205,7 @@ app.post("/", async (req, res) => {
                 // console.error(error.name);
                 // console.error(stderr);
                 fs.rmdir(
-                  `${req.body.id}`,
+                  `${__dirname}` + "/" + `${req.body.id}`,
                   {
                     recursive: true,
                   },
@@ -221,7 +223,7 @@ app.post("/", async (req, res) => {
               } else {
                 console.log("1");
 
-                exec(`cd ${req.body.id} && ./run`, (error, stdout, stderr) => {
+                exec(`cd ${__dirname}` + "/" + `${req.body.id} && ./run`, (error, stdout, stderr) => {
                   console.log(`stdout: ${stdout}`);
                   console.log(`stderr: ${stderr}`);
                   if (error) {
@@ -229,7 +231,7 @@ app.post("/", async (req, res) => {
 
                     console.error(`exec error: ${error}`);
                     fs.rmdir(
-                      `${req.body.id}`,
+                      `${__dirname}` + "/" + `${req.body.id}`,
                       {
                         recursive: true,
                       },
@@ -248,7 +250,7 @@ app.post("/", async (req, res) => {
                     console.log("2");
 
                     fs.rmdir(
-                      `${req.body.id}`,
+                      `${__dirname}` + "/" + `${req.body.id}`,
                       {
                         recursive: true,
                       },
@@ -269,20 +271,20 @@ app.post("/", async (req, res) => {
             }
           );
         } else if (req.body.name == "c++") {
-          fs.writeFile(`${req.body.id}/run.cpp`, req.body.code, function (err) {
+          fs.writeFile(`${__dirname}` + "/" + `${req.body.id}/run.cpp`, req.body.code, function (err) {
             if (err) throw err;
             console.log("Saved!");
           });
 
           exec(
-            `cd ${req.body.id} && g++ run.cpp -o teste`,
+            `cd ${__dirname}` + "/" + `${req.body.id} && g++ run.cpp -o teste`,
             (error, stdout, stderr) => {
               if (error) {
                 // console.error(`exec error 0000000: ${error}`);
                 // console.error(error.name);
                 // console.error(stderr);
                 fs.rmdir(
-                  `${req.body.id}`,
+                  `${__dirname}` + "/" + `${req.body.id}`,
                   {
                     recursive: true,
                   },
@@ -299,14 +301,14 @@ app.post("/", async (req, res) => {
 
               } else {
                 exec(
-                  `cd ${req.body.id} && ./teste`,
+                  `cd ${__dirname}` + "/" + `${req.body.id} && ./teste`,
                   (error, stdout, stderr) => {
                     console.log(`stdout: ${stdout}`);
                     console.log(`stderr: ${stderr}`);
                     if (error) {
                       console.error(`exec error: ${error}`);
                       fs.rmdir(
-                        `${req.body.id}`,
+                        `${__dirname}` + "/" + `${req.body.id}`,
                         {
                           recursive: true,
                         },
@@ -323,7 +325,7 @@ app.post("/", async (req, res) => {
                       return;
                     } else {
                       fs.rmdir(
-                        `${req.body.id}`,
+                        `${__dirname}` + "/" + `${req.body.id}`,
                         {
                           recursive: true,
                         },
@@ -344,20 +346,20 @@ app.post("/", async (req, res) => {
           );
         } else if (req.body.name == "java") {
           fs.writeFile(
-            `${req.body.id}/run.java`,
+            `${__dirname}` + "/" + `${req.body.id}/run.java`,
             req.body.code,
             function (err) {
               if (err) throw err;
               console.log("Saved!");
             }
           );
-          exec(`javac ${req.body.id}/run.java`, (error, stdout, stderr) => {
+          exec(`javac ${__dirname}` + "/" + `${req.body.id}/run.java`, (error, stdout, stderr) => {
             if (error) {
               console.error(`exec error 0000000: ${error}`);
               console.error(error.name);
               console.error(stderr);
               fs.rmdir(
-                `${req.body.id}`,
+                `${__dirname}` + "/" + `${req.body.id}`,
                 {
                   recursive: true,
                 },
@@ -373,13 +375,13 @@ app.post("/", async (req, res) => {
               res.json({"error":"error","output":stderr});
 
             } else {
-              exec(`cd ${req.body.id} && java run`, (error, stdout, stderr) => {
+              exec(`cd ${__dirname}` + "/" + `${req.body.id} && java run`, (error, stdout, stderr) => {
                 console.log(`stdout: ${stdout}`);
                 console.log(`stderr: ${stderr}`);
                 if (error) {
                   console.error(`exec error: ${error}`);
                   fs.rmdir(
-                    `${req.body.id}`,
+                    `${__dirname}` + "/" + `${req.body.id}`,
                     {
                       recursive: true,
                     },
@@ -396,7 +398,7 @@ app.post("/", async (req, res) => {
                   return;
                 } else {
                   fs.rmdir(
-                    `${req.body.id}`,
+                    `${__dirname}` + "/" + `${req.body.id}`,
                     {
                       recursive: true,
                     },
@@ -419,11 +421,11 @@ app.post("/", async (req, res) => {
   } catch (error) { }
 });
 
-app.listen(3334, () => {
-  console.log("started");
-});
-
-
-// app.listen(3331, () => {
+// app.listen(3334, () => {
 //   console.log("started");
 // });
+
+
+app.listen(8282, () => {
+  console.log("started");
+});
