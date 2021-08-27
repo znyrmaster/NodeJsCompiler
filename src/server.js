@@ -421,11 +421,11 @@ app.post("/", async (req, res) => {
   } catch (error) { }
 });
 
-// app.listen(3334, () => {
-//   console.log("started");
-// });
-
-
-app.listen(8282, () => {
+app.listen(3334, () => {
   console.log("started");
 });
+
+
+// app.listen(8282, () => {
+//   console.log("started");
+// });
