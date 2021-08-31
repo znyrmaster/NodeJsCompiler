@@ -40,6 +40,19 @@ app.post("/", async (req, res) => {
     fs.mkdir(`${__dirname}` + "/" + `${req.body.id}`, (err, folder) => {
       if (err) {
         console.log(err);
+        fs.rmdir(
+          `${__dirname}` + "/" + `${req.body.id}`,
+          {
+            recursive: true,
+          },
+          (error) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("Non Recursive: Directories Deleted!");
+            }
+          }
+        );
       } else {
         if (req.body.name == "python") {
 
